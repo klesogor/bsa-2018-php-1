@@ -9,21 +9,21 @@ class MarketHtmlPresenter
 {
     public function present(CoinMarket $market): string
     {
-        $result = '';
-        $result.=$this->renderHead();
+        $result=$this->renderHead();
         $result.='<body>';
         $result.=$this->renderHeader();
         $result.=$this->renderBody($market);
+        $result.=$this->renderFooter();
         $result.='</body>';
         return $result;
     }
 
-    public function renderException():string
+    protected function renderException():string
     {
         return 'Whoops, something went wrong. We will try to fix this ASAP, but you can motivate us to work harder with some coins ;)';
     }
 
-    public function renderHead()
+    protected function renderHead()
     {
        return' <head><meta charset="UTF-8"><meta name="viewport"
            content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
@@ -37,14 +37,14 @@ class MarketHtmlPresenter
             <title>Built-in Web Server</title>
             </head>';
     }
-    public function renderHeader():string
+    protected function renderHeader():string
     {
        return ' <div class = "container-fluid header">
                 <i class="fas fa-chart-line"></i>
                 <span>CryptoTrade</span>
                 </div>';
     }
-    public function renderBody(CoinMarket $market):string
+    protected function renderBody(CoinMarket $market):string
     {
         $result = '<div class="container-fluid" id="body">
                 <div class = "content-header">
@@ -91,26 +91,36 @@ class MarketHtmlPresenter
                         <div class = "content-header">
                             Currencies
                         </div>';
+
         foreach($market->getCurrencies() as $currency) {
-            $result.= $this->renderCurrency($currency);
+            $result.= $this->renderCurrency($currency,$market->maxPrice());
         }
-        $result.='</div></div>';
+        $result.='</div>';
         return $result;
     }
 
-    protected function renderCurrency(Currency $currency):string
+    protected function renderCurrency(Currency $currency,...$parameters):string
     {
+        $mark = $currency->getDailyPrice()===$parameters[0] ? 'color:green;font-weight:600;': '';
         return "
         <div class='currency-container'>
+        
             <img src='{$currency->getLogoUrl()}' alt='currency logo'>
             <span>
                 {$currency->getName()}
             </span>
-            <span style = 'float:right'>
+            <span style = 'float:right;{$mark}'>
                 Daily price:{$currency->getDailyPrice()}
             </span>
          </div>
         ";
+    }
+
+    protected function renderFooter()
+    {
+        return "<hr style='border:1px solid black'><div class='footer' style='text-align:center'>
+                    COPYRIGHT CryptoTrade 2018
+                </div>";
     }
 
 }
