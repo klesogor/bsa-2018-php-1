@@ -9,13 +9,17 @@ class MarketHtmlPresenter
 {
     public function present(CoinMarket $market): string
     {
-        $result=$this->renderHead();
-        $result.='<body>';
-        $result.=$this->renderHeader();
-        $result.=$this->renderBody($market);
-        $result.=$this->renderFooter();
-        $result.='</body>';
-        return $result;
+        try{
+            $result=$this->renderHead();
+            $result.='<body>';
+            $result.=$this->renderHeader();
+            $result.=$this->renderBody($market);
+            $result.=$this->renderFooter();
+            $result.='</body>';
+            return $result;
+        }catch(\Exception $exception){
+            return $this->renderException();
+        }
     }
 
     protected function renderException():string
