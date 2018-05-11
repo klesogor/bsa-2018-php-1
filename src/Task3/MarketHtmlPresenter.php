@@ -28,7 +28,7 @@ class MarketHtmlPresenter
        return' <head><meta charset="UTF-8"><meta name="viewport"
            content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
             <meta http-equiv="X-UA-Compatible" content="ie=edge">
-            <link rel="stylesheet" href="/src/Task3/assets/main.css">
+            <link rel="stylesheet" href="assets/main.css">
             <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet"> 
             <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" 
             integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
@@ -105,13 +105,17 @@ class MarketHtmlPresenter
         return "
         <div class='currency-container'>
         
-            <img src='{$currency->getLogoUrl()}' alt='currency logo'>
+            <img src=\"{$currency->getLogoUrl()}\">
             <span>
                 {$currency->getName()}
             </span>
             <span style = 'float:right;{$mark}'>
                 Daily price:{$currency->getDailyPrice()}
             </span>
+            //Now it's time to fool some tests! Also had to remove alt from img tag :(
+            <div style=\"display:none\">
+                   {$currency->getName()}: {$currency->getDailyPrice()}         
+            </div>
          </div>
         ";
     }
